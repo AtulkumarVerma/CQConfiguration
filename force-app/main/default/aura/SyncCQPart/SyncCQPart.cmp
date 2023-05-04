@@ -1,0 +1,15 @@
+<aura:component controller="RequirePart" implements="flexipage:availableForAllPageTypes" access="global">
+    <aura:attribute name="isLoading" type="Boolean" default="false" />
+    
+    <aura:if isTrue="{!v.isLoading }">
+        <lightning:spinner alternativeText="Loading" size="medium" variant="brand" />
+    </aura:if>
+	<lightning:card  title="Sync Part">
+        <aura:set attribute="actions">
+            
+        </aura:set>
+        <p class="slds-p-horizontal_small">
+            <lightning:button label="Sync" onclick="{!c.syncParts}"/>
+        </p>
+    </lightning:card>
+</aura:component>
