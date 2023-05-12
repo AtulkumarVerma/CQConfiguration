@@ -55,9 +55,9 @@ private class RequirePartTest {
         return u;
     }
     
-    Static List<Account> getAccountByName(String name){
-       List<Account> accList = [SELECT id,Name FROM Account where name =: name];
-       return accList;
+    Static List<SQX_Part__c> getRelatedAccountByAccountName(String name){
+       List<SQX_Part__c> partsList = [SELECT id,Name FROM SQX_Part__c where Related_Account__r.Name=: name];
+       return partsList;
     }
     
     @isTest static  void testGetCalloutForHighVolumeAccount() {
@@ -75,9 +75,8 @@ private class RequirePartTest {
             
             Test.stopTest();
             System.assertNotEquals('', result, 'Value of result should be success.');
-            ////High Volume, Low Volume
-            List<Account> accList = getAccountByName('High Volume');
-            System.assertNotEquals(null, accList, 'Value of accList should not be null.');
+            List<SQX_Part__c> partsList = getRelatedAccountByAccountName('High Volume');
+            System.assertNotEquals(null, partsList, 'Value of partsList should not be null.');
         }
         
     }  
@@ -157,9 +156,8 @@ private class RequirePartTest {
             
             Test.stopTest();
             System.assertNotEquals('', result, 'Value of result should be success.');
-            // Low Volume
-            List<Account> accList = getAccountByName('Low Volume');
-            System.assertNotEquals(null, accList, 'Value of accList should not be null.');
+            List<SQX_Part__c> partsList= getRelatedAccountByAccountName('Low Volume');
+            System.assertNotEquals(null, partsList, 'Value of partsList should not be null.');
         }
         
     } 
