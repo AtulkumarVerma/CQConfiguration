@@ -55,7 +55,12 @@ private class RequirePartTest {
         return u;
     }
     
-    @isTest static  void testGetCallout() {
+    Static List<Account> getAccountByName(String name){
+       List<Account> accList = [SELECT id,Name FROM Account where name =: name];
+       return accList;
+    }
+    
+    @isTest static  void testGetCalloutForHighVolumeAccount() {
         User objUser = new User();
         objUser.id = UserInfo.getUserId();
         System.runAs (objUser) {
@@ -67,8 +72,12 @@ private class RequirePartTest {
             Test.startTest();
             Test.setMock(HttpCalloutMock.class, mock);
             String result = RequirePart.syncRequirePart();
+            
             Test.stopTest();
             System.assertNotEquals('', result, 'Value of result should be success.');
+            ////High Volume, Low Volume
+            List<Account> accList = getAccountByName('High Volume');
+            System.assertNotEquals(null, accList, 'Value of accList should not be null.');
         }
         
     }  
@@ -132,4 +141,26 @@ private class RequirePartTest {
         }
         
     }  
+    
+     @isTest static  void testGetCalloutForLowVolumeAccount() {
+        User objUser = new User();
+        objUser.id = UserInfo.getUserId();
+        System.runAs (objUser) {
+            StaticResourceCalloutMock mock = new StaticResourceCalloutMock();
+            mock.setStaticResource('getParts');
+            mock.setStatusCode(200);
+            mock.setHeader('Content-Type', 'application/json');
+            
+            Test.startTest();
+            Test.setMock(HttpCalloutMock.class, mock);
+            String result = RequirePart.syncRequirePart();
+            
+            Test.stopTest();
+            System.assertNotEquals('', result, 'Value of result should be success.');
+            // Low Volume
+            List<Account> accList = getAccountByName('Low Volume');
+            System.assertNotEquals(null, accList, 'Value of accList should not be null.');
+        }
+        
+    } 
 }
